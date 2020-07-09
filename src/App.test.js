@@ -1,13 +1,31 @@
 import React from 'react';
-import { render, waitFor } from '@testing-library/react';
+import {
+  render,
+  waitFor,
+  getByRole,
+  findByDisplayValue,
+  findByRole,
+  findByPlaceholderText,
+} from '@testing-library/react';
 import { fetchShow as mockFetchShow } from './api/fetchShow';
+import userEvent from '@testing-library/user-event';
 import App from './App';
 
 jest.mock('./api/fetchShow');
 
 test('App fetches and renders show data', async () => {
   mockFetchShow.mockResolvedValueOnce(mockData);
-  const { queryAllByText, rerender } = render(<App />);
+  const { queryAllByText, getByRole, findByPlaceholderText, rerender } = render(
+    <App />
+  );
+
+  // // Find the Select a season Dropdown
+  // const dropdown = getByRole('Dropdown', { name: /Select a season/i });
+
+  // // Click on the dropdown
+  // userEvent.click(dropdown);
+  // await findByPlaceholderText(/option/i);
+
   expect(queryAllByText(/fetching data/i)).toHaveLength(1);
   await waitFor(() => {
     expect(queryAllByText(/summary/i)).toHaveLength(1);
@@ -33,6 +51,20 @@ const mockData = {
     ],
   },
 };
+
+// test('App renders, user clicks on dropdown', async () => {
+//   // Render app
+//   const { findByDisplayValue, getAllByTestId, getByRole, findByText } = render(
+//     <App />
+//   );
+
+//   // Find the Select a season Dropdown
+//   const dropdown = getByRole('Dropdown', { name: /Select a season/i });
+
+//   // Click on the dropdown
+//   userEvent.click(dropdown);
+//   await findByRole(/option/i);
+// });
 
 // import React from 'react';
 // import App from './App';
